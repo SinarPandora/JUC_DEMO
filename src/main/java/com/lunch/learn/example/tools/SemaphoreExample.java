@@ -1,13 +1,13 @@
 package com.lunch.learn.example.tools;
 
-import lombok.extern.java.Log;
-
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
+
+import lombok.extern.java.Log;
 
 /**
  * Author: sinar
@@ -28,7 +28,7 @@ public class SemaphoreExample {
         final ExecutorService pool = Executors.newFixedThreadPool(POOL_SIZE);
 
         for (int i = 0; i < TASK_NUMS; i++) {
-            final var id = i;
+            final int id = i;
             pool.submit(() -> prepareAndUploadFile(id, uploader));
         }
 

@@ -1,12 +1,9 @@
 package com.lunch.learn.example.issue.data_consistency;
 
-import lombok.SneakyThrows;
-import lombok.extern.java.Log;
-
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+
+import lombok.extern.java.Log;
 
 /**
  * Author: sinar
@@ -23,10 +20,9 @@ public class SynchronizedCounter {
         for (int i = 0; i < TASKS; i++) {
             pool.execute(() -> addOne());
         }
-        if (pool.awaitTermination(3, TimeUnit.SECONDS)) {
-            log.info("Result is " + count);
-            pool.shutdown();
-        }
+        Thread.sleep(3000);
+        log.info("Result is " + count);
+        pool.shutdown();
     }
 
     private synchronized static void addOne() {

@@ -1,10 +1,10 @@
 package com.lunch.learn.example.executor;
 
-import lombok.extern.java.Log;
-
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import lombok.extern.java.Log;
 
 /**
  * Author: sinar
@@ -14,28 +14,33 @@ import java.util.concurrent.Executors;
 public class PromiseInJava {
 
     private static final int POOL_SIZE = 20;
-    private static final int TASK_NUM = 10;
+    private static final int TASK_NUM = 20;
 
     public static void main(String[] args) throws InterruptedException {
         final ExecutorService singlePool = Executors.newSingleThreadExecutor();
         final ExecutorService pool = Executors.newFixedThreadPool(POOL_SIZE);
 
         for (int i = 0; i < TASK_NUM; i++) {
-            final var id = i;
-            CompletableFuture.supplyAsync(() -> hello(id));
+            final int id = i;
+            CompletableFuture
+                    .supplyAsync(() -> hello(id), pool)
+                    .thenAcceptAsync(idx -> {
+                        System.out.println(Thread.currentThread().getName());
+                        log.info("Hello YCY! I'm " + idx);
+                    }, singlePool);
         }
 
         // Just block for demo
         Thread.sleep(100_000);
     }
 
-    private static boolean hello(int id) {
+    private static int hello(int id) {
         try {
-            System.out.println("Hi! I'm " + id);
-            Thread.sleep(10000);
+            System.out.println(Thread.currentThread().getName());
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        return true;
+        return id;
     }
 }

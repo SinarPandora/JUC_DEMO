@@ -1,10 +1,13 @@
 package com.lunch.learn.example.tools;
 
-import lombok.extern.java.Log;
-
 import java.security.SecureRandom;
 import java.util.Random;
-import java.util.concurrent.*;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import lombok.extern.java.Log;
 
 /**
  * Author: sinar
@@ -23,7 +26,7 @@ public class CyclicBarrierExample {
         // Maybe here is a global pool managed by Spring
         final ExecutorService pool = Executors.newFixedThreadPool(POOL_SIZE);
         for (int i = 0; i < TASK_NUMS; i++) {
-            final var taskId = i;
+            final int taskId = i;
             Thread.sleep(1000);
             pool.submit(() -> updateData(taskId));
         }
